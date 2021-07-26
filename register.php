@@ -49,7 +49,7 @@ if (isset($_POST['FacultyRegistration'])) {
     }
 }
 if (isset($_POST['StudentRegistration'])) {
-    if (isset($_POST['StudentName']) && $_POST['StudentName'] != "" && isset($_POST['StudentEmail']) && $_POST['StudentEmail'] != "" && isset($_POST['contactNo']) && $_POST['contactNo'] != "" && isset($_POST['StudentDob']) && $_POST['StudentDob'] != "" && isset($_POST['StudentId']) && $_POST['StudentId'] != "" && isset($_POST['FacultyConfirmPassword']) && $_POST['FacultyConfirmPassword'] != "") {
+    if (isset($_POST['StudentName']) && $_POST['StudentName'] != "" && isset($_POST['StudentEmail']) && $_POST['StudentEmail'] != "" && isset($_POST['contactNo']) && $_POST['contactNo'] != "" && isset($_POST['StudentDob']) && $_POST['StudentDob'] != "" && isset($_POST['StudentId']) && $_POST['StudentId'] != "" && isset($_POST['StudentConfirmPassword']) && $_POST['StudentConfirmPassword'] != "") {
         $StudentId = $connect -> real_escape_string($_POST['StudentId']);
         $StudentCheck = "SELECT * FROM `students` WHERE `id` = '$StudentId'";
         $StudentCheckSql = mysqli_query($connect,$StudentCheck);
