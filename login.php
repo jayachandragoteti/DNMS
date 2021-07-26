@@ -1,4 +1,41 @@
+<?PHP 
+include "./databaseConnection.php";
+session_start();
 
+if (isset($_SESSION['faculty'])) {
+	header('location:./faculty/index.php');
+}
+
+if (isset($_POST['loginSubmit'])) {
+	if (isset($_POST['loginId']) && $_POST['loginId'] != "" && isset($_POST['loginPassword']) && $_POST['loginPassword'] != "" && isset($_POST['LoginType']) && $_POST['LoginType'] != "") {
+		$LoginType = $connect -> real_escape_string($_POST['LoginType']); 
+		$loginId = $connect -> real_escape_string($_POST['loginId']); 
+		$loginPassword = $connect -> real_escape_string($_POST['loginPassword']); 
+		if ($LoginType == "Faculty") {
+			$UserCheck = mysqli_query($connect,"SELECT `password` FROM `faculty` WHERE `id` = '$loginId'");
+			if (mysqli_num_rows($UserCheck) == 1) {
+				$UserCheckRow = mysqli_fetch_array($UserCheck);
+				if (password_verify($loginPassword, $UserCheckRow['password'])) {
+					$_SESSION['faculty'] = $loginId;
+					header('location:./faculty/index.php');
+				} else {
+					echo "<script>alert('Invalid Password!')</script>";
+				}
+			} else {
+				echo "<script>alert('Please Register!')</script>";
+			}		
+		}elseif ($LoginType == "Student") {
+			# code...
+		}else {
+			echo "<script>alert('Invalid Login!')</script>";
+		}
+		
+	} else {
+		echo "<script>alert('All fields must be filled!')</script>";
+	}
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -61,11 +98,11 @@
                                                 <h3 class="text-center mb-5 text-primary">Login</h3>
                                             </div>
                                             <div class="row">
-                                                <form id="">
+                                                <form method="POST" action="<?PHP echo $_SERVER['PHP_SELF'];?>">
                                                     <div class="col-md-12">
                                                         <div class="mb-3">
-                                                            <label for="loginEmail" class="form-label">Email</label>
-                                                            <input type="email" class="form-control border-primary shadow-none" name="loginEmail" id="loginEmail" required/>
+                                                            <label for="loginId" class="form-label">Id Number</label>
+                                                            <input type="text" class="form-control border-primary shadow-none" name="loginId" id="loginId" required/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -79,14 +116,14 @@
                                                             <label for="LoginType" class="form-label">Select Your Login</label>
                                                             <select class="form-select border-primary shadow-none" name="LoginType"  id="LoginType"aria-label="Select Your login" required>
                                                                 <option selected value="">---- Select ----</option>
-                                                                <option value="Hospital">Hospital</option>
-                                                                <option value="Receiver">Receiver</option>
+                                                                <option value="Faculty">Faculty</option>
+                                                                <option value="Student">Student</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <p class="fw-bold text-primary d-none alert-bell"><i class="fas fa-bell"></i> <span class="User-Login-Alerts"></span></p>
                                                     <div class=" mb-3 text-center">
-                                                        <input type="button" onclick="userLogin()" name="loginSubmit" class="btn btn-sm btn-primary text-white rounded-pill" style="font-size:20px;" value="Login" />
+                                                        <input type="submit"name="loginSubmit" class="btn btn-sm btn-primary text-white rounded-pill" style="font-size:20px;" value="Login" />
                                                     </div>
                                                 </form>
                                             </div>

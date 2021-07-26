@@ -1,4 +1,10 @@
-
+<?PHP
+include "./../databaseConnection.php";
+session_start();
+if (!isset($_SESSION['faculty'])) {
+	header('location:./../logout.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

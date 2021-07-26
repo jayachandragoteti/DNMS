@@ -1,5 +1,10 @@
 <?PHP 
+
 include "./databaseConnection.php";
+session_start();
+if (isset($_SESSION['faculty'])) {
+	header('location:./faculty/index.php');
+}
 
 if (isset($_POST['FacultyRegistration'])) {
     if (isset($_POST['FacultyName']) && $_POST['FacultyName'] != "" && isset($_POST['FacultyId']) && $_POST['FacultyId'] != "" && isset($_POST['FacultyEmail']) && $_POST['FacultyEmail'] != "" && isset($_POST['FacultyContactNo']) && $_POST['FacultyContactNo'] != "" && isset($_POST['FacultyPassword']) && $_POST['FacultyPassword'] != "" && isset($_POST['FacultyConfirmPassword']) && $_POST['FacultyConfirmPassword'] != "") {
