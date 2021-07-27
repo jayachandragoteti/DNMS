@@ -23,13 +23,14 @@
 	<div class="d-flex" id="wrapper">
 		<!-- Sidebar-->
 		<div class="border-end bg-white" id="sidebar-wrapper">
-			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">Department&nbspNotifications</div>
+			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">
+				Department&nbspNotifications
+			</div>
 			<div class="list-group list-group-flush"> 
-                <a href="#" onclick="ajaxHomePageCall()" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle Profile " ><span class="fa fa-home mr-3"></span> Profile</a> 
-                <a href="#" onclick="ajaxAvailableBloodPageCall()" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  AvailableBlood"><span class="fa fa-tint mr-3"></span> Available Blood</a> 
-                <a href="#" onclick="ajaxBloodRequestsPageCall()" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  BloodRequests"><span class="fa fa-table mr-3"></span> Blood Requests</a> 
-                <a href="#" onclick="ajaxAddBloodPageCall()" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  AddBlood"><span class="fa fa-tint mr-3"></span> Add Blood</a>
-                <a href="#" onclick="ajaxChangePasswordPageCall()" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  ChangePassword"><span class="fa fa-key mr-3"></span> Change Password</a> 
+                <a href="index.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle Profile " ><i class="fas fa-user-alt"></i> Profile</a> 
+                <a href="addNotifications.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  AddNotification"><i class="fas fa-bell"></i> Add Notification</a> 				
+                <a href="changePassword.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  ChangePassword"><i class="fa fa-key mr-3"></i> Change Password</a> 
+                <a href="myNotifications.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  MyNotifications"><i class="fas fa-bell"></i> My Notifications</a> 
 			</div>
 		</div>
 		<!-- Page content wrapper-->
@@ -51,7 +52,9 @@
 			<!-- Page content-->
 			<div class="container-fluid">
 				<!-- Main -->
-				<main class="ajax-main-content"> </main>
+				<main class="ajax-main-content">
+					
+				</main>
 				<!-- End Main -->
 			</div>
 		</div>

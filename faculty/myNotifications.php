@@ -1,10 +1,4 @@
-<?PHP
-include "./../databaseConnection.php";
-session_start();
-if (!isset($_SESSION['faculty'])) {
-	header('location:./../logout.php');
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +23,9 @@ if (!isset($_SESSION['faculty'])) {
 	<div class="d-flex" id="wrapper">
 		<!-- Sidebar-->
 		<div class="border-end bg-white" id="sidebar-wrapper">
-			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">Department&nbspNotifications</div>
+			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">
+				Department&nbspNotifications
+			</div>
 			<div class="list-group list-group-flush"> 
                 <a href="index.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle Profile " ><i class="fas fa-user-alt"></i> Profile</a> 
                 <a href="addNotifications.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  AddNotification"><i class="fas fa-bell"></i> Add Notification</a> 				
@@ -56,52 +52,7 @@ if (!isset($_SESSION['faculty'])) {
 			<!-- Page content-->
 			<div class="container-fluid">
 				<!-- Main -->
-				<main class="ajax-main-content"> 
-<div class="container mt-5">
-						<div class="row justify-content-md-center">
-							<div class="col-md-8 ">
-								<div class="card text-center">
-									<div class="card-header">
-										<h2 class="text-primary fw-bold large">My Profile</h2>
-									</div>
-									<div class="card-body justify-content-md-center">
-										<div class="container">
-											<div class="row justify-content-md-center">
-												<div class="col-md-8 mt-lg-5">
-													<form method="post">
-														<div class="mb-3 text-primary ">
-															<label for="FacultyId" class="form-label">Faculty Id</label>
-															<input type="text" id="FacultyId" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none"  disabled/> 
-														</div>
-														<div class="mb-3 text-primary">
-															<label for="FacultyName" class="form-label">Name</label>
-															<input type="text" name="FacultyName" id="FacultyName" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none" required/> 
-														</div>
-														<div class="mb-3 text-primary ">
-															<label for="FacultyContactNo" class="form-label">Contact No</label>
-															<input type="phone" name="FacultyContactNo" id="FacultyContactNo" value="<?PHP echo $SelectFacultyRow['contactNo'];?>" class="form-control border-primary border shadow-none" required/> 
-														</div>
-														<div class="mb-3 text-primary">
-															<label for="email" class="form-label">Email</label>
-															<input type="email" name="FacultyEmail" id="email" value="<?PHP echo $SelectFacultyRow['email'];?>" class="form-control border-primary border shadow-none" required/> 
-														</div>
-														<div class="mb-3 text-primary ">
-															<label for="Degree" class="form-label">Degree</label>
-															<input type="text" name="FacultyDegree" id="Degree" value="<?PHP echo $SelectFacultyRow['city'];?>" class="form-control border-primary  border shadow-none" required/> 
-														</div>
-														<div class=" mb-3 text-primary text-center mt-2">
-															<input type="submit" class="btn btn-sm btn-primary fw-bold rounded-pill " name="Update" style="font-size:20px;" value="    Update   " /> 
-														</div>
-													</form>
-												</div>
-											</div>
-										</div> 
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</main>
+				<main class="ajax-main-content"> </main>
 				<!-- End Main -->
 			</div>
 		</div>

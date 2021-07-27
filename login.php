@@ -1,7 +1,6 @@
 <?PHP 
 include "./databaseConnection.php";
 session_start();
-
 if (isset($_SESSION['faculty'])) {
 	header('location:./faculty/index.php');
 }
@@ -17,15 +16,28 @@ if (isset($_POST['loginSubmit'])) {
 				$UserCheckRow = mysqli_fetch_array($UserCheck);
 				if (password_verify($loginPassword, $UserCheckRow['password'])) {
 					$_SESSION['faculty'] = $loginId;
-					header('location:./faculty/index.php');
+					echo "<script>alert('Successfully logged in.')</script>";
+                    echo "<script>window.location='./faculty/index.php';</script>";
 				} else {
 					echo "<script>alert('Invalid Password!')</script>";
 				}
 			} else {
-				echo "<script>alert('Please Register!')</script>";
+				echo "<script>alert('User not exits, please register.')</script>";
 			}		
 		}elseif ($LoginType == "Student") {
-			# code...
+			$UserCheck = mysqli_query($connect,"SELECT `password` FROM `students` WHERE `id` = '$loginId'");
+			if (mysqli_num_rows($UserCheck) == 1) {
+				$UserCheckRow = mysqli_fetch_array($UserCheck);
+				if (password_verify($loginPassword, $UserCheckRow['password'])) {
+					$_SESSION['students'] = $loginId;
+					echo "<script>alert('Successfully logged in.')</script>";
+                    echo "<script>window.location='./index.php';</script>";
+				} else {
+					echo "<script>alert('Invalid Password!')</script>";
+				}
+			} else {
+				echo "<script>alert('User not exits, please register.')</script>";
+			}
 		}else {
 			echo "<script>alert('Invalid Login!')</script>";
 		}

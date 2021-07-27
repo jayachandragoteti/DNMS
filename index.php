@@ -82,35 +82,36 @@ if (isset($_SESSION['faculty'])) {
 								<form method="get" >
 									<div class="row">
 										<div class="col-sm-3">
-											<select name="city" id="availableNotificationsCityFilter"  class="form-select bg-light mb-2" aria-label="Default select example" onchange="availableNotifications()">
-												<option selected value="">City</option>
-												<option value="">All</option>
-
+											<select name="year" id="availableNotificationsYearFilter"  class="form-select bg-light mb-2" aria-label="Default select example">
+												<option selected value="">Year</option>
+												<option value="1">1st Year</option>
+												<option value="2">2nd Year</option>
+												<option value="3">3rd Year</option>
+												<option value="4">4th Year</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
-											<select name="NotificationsGroup" id="availableNotificationsGroupFilter" class="form-select bg-light mb-2" aria-label="Default select example" onchange="availableNotifications()">
-												<option selected value="">Notifications Group</option>
-												<option value="">All</option>
-												<option value="A+">A+</option>
-												<option value="A-">A-</option>
-												<option value="B+">B+</option>
-												<option value="B-">B-</option>
-												<option value="O+">O+</option>
-												<option value="O-">O-</option>
-												<option value="AB+">AB+</option>
-												<option value="AB-">AB-</option>
+											<select name="branch" id="availableNotificationsBranchFilter" class="form-select bg-light mb-2" aria-label="Default select example">
+												<option selected value="">Branch</option>
+                                                <option value="ECE">ECE</option>
+                                                <option value="CSE">CSE</option>
+                                                <option value="IT">IT</option>
+                                                <option value="MECH">MECH</option>
+                                                <option value="CIVIL">CIVIL</option>
+                                                <option value="EEE">EEE</option>
+                                                <option value="CHEMICAL">CHEMICAL</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
-											<select name="hospital" id="availableNotificationsHospitalFilter" class="form-select bg-light mb-2" aria-label="Default select example" onchange="availableNotifications()">
-												<option selected value="">Hospital</option>
-												<option value="">All</option>
-
+											<select name="section" id="availableNotificationsSectionFilter" class="form-select bg-light mb-2" aria-label="Default select example" >
+												<option selected value="">Section</option>
+												<option value="A">A</option>
+												<option value="B">B</option>
+												<option value="C">C</option>
 											</select>
 										</div>
 										<div class="col-sm-3">
-											<select id="ShowRows" class="form-select bg-light mb-2" aria-label="Default select example" onchange="availableNotifications()">
+											<select id="ShowRows" class="form-select bg-light mb-2" aria-label="Default select example">
 												<option selected value="">Show Rows</option>
 												<option value="10">10</option>
 												<option value="20">20</option>
@@ -138,11 +139,9 @@ if (isset($_SESSION['faculty'])) {
 									<thead>
 										<tr class="p-2">
 											<th scope="col">Sno</th>
-											<th scope="col">Hospital</th>
-											<th scope="col">Notifications&nbspGroup</th>
-											<th scope="col">Quantity (Units)</th>
-											<th scope="col">City</th>
-											<th scope="col">Request</th>
+											<th scope="col">Notification</th>
+											<th scope="col"></th>
+											<th scope="col">View</th>
 										</tr>
 									</thead>
 									<p class="fw-bold text-primary d-none alert-bell"><i class="fas fa-bell"></i> <span class="Sample-Request-Alerts"></span></p>

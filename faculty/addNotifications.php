@@ -4,6 +4,19 @@ session_start();
 if (!isset($_SESSION['faculty'])) {
 	header('location:./../logout.php');
 }
+$FacultyId = $_SESSION['faculty'];
+
+if (isset($_POST['AddNotification'])) {
+	if (condition) {
+		$event_banner= $_FILES['event_banner']['name'];
+		$event_banner_file = $_FILES['event_banner']['tmp_name'];
+		$event_banner_size = $_FILES['event_banner']['size'];
+	} else {
+		# code...
+	}
+	
+	
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +42,9 @@ if (!isset($_SESSION['faculty'])) {
 	<div class="d-flex" id="wrapper">
 		<!-- Sidebar-->
 		<div class="border-end bg-white" id="sidebar-wrapper">
-			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">Department&nbspNotifications</div>
+			<div class="sidebar-heading border-bottom bg-primary font-weight-bold text-white">
+				Department&nbspNotifications
+			</div>
 			<div class="list-group list-group-flush"> 
                 <a href="index.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle Profile " ><i class="fas fa-user-alt"></i> Profile</a> 
                 <a href="addNotifications.php" class="list-group-item list-group-item-action list-group-item-light p-3 text-primary sidebarToggle  AddNotification"><i class="fas fa-bell"></i> Add Notification</a> 				
@@ -56,41 +71,69 @@ if (!isset($_SESSION['faculty'])) {
 			<!-- Page content-->
 			<div class="container-fluid">
 				<!-- Main -->
-				<main class="ajax-main-content"> 
-<div class="container mt-5">
+				<main class="ajax-main-content">
+				<div class="container mt-5">
 						<div class="row justify-content-md-center">
 							<div class="col-md-8 ">
 								<div class="card text-center">
 									<div class="card-header">
-										<h2 class="text-primary fw-bold large">My Profile</h2>
+										<h2 class="text-primary fw-bold large">Add Notification</h2>
 									</div>
 									<div class="card-body justify-content-md-center">
 										<div class="container">
 											<div class="row justify-content-md-center">
 												<div class="col-md-8 mt-lg-5">
-													<form method="post">
+													<form method="post" action="<?PHP echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data">
+														<div class="mb-3 text-primary">
+															<label for="NotificationName" class="form-label">Notification Name *</label>
+															<input type="text" name="NotificationName" id="NotificationName" class="form-control border-primary border shadow-none" required/> 
+														</div>
 														<div class="mb-3 text-primary ">
-															<label for="FacultyId" class="form-label">Faculty Id</label>
-															<input type="text" id="FacultyId" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none"  disabled/> 
+															<label for="NotificationDescription" class="form-label">Subject - Description *</label>
+															<textarea  name="NotificationDescription" id="NotificationDescription" rows="3" class="form-control border-primary border shadow-none" required></textarea>
 														</div>
 														<div class="mb-3 text-primary">
-															<label for="FacultyName" class="form-label">Name</label>
-															<input type="text" name="FacultyName" id="FacultyName" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none" required/> 
+															<label for="NotificationYear" class="form-label">year</label>
+															<select name="NotificationYear" id="NotificationYear"  class="form-select bg-light mb-2" aria-label="Default select example">
+																<option selected value="">Year</option>
+																<option value="1">1st Year</option>
+																<option value="2">2nd Year</option>
+																<option value="3">3rd Year</option>
+																<option value="4">4th Year</option>
+															</select>
 														</div>
 														<div class="mb-3 text-primary ">
-															<label for="FacultyContactNo" class="form-label">Contact No</label>
-															<input type="phone" name="FacultyContactNo" id="FacultyContactNo" value="<?PHP echo $SelectFacultyRow['contactNo'];?>" class="form-control border-primary border shadow-none" required/> 
-														</div>
-														<div class="mb-3 text-primary">
-															<label for="email" class="form-label">Email</label>
-															<input type="email" name="FacultyEmail" id="email" value="<?PHP echo $SelectFacultyRow['email'];?>" class="form-control border-primary border shadow-none" required/> 
+															<label for="NotificationYearBranch" class="form-label">Branch</label>
+															<select name="NotificationYearBranch" id="NotificationYearBranch" class="form-select bg-light mb-2" aria-label="Default select example">
+																<option selected value="">Branch</option>
+																<option value="ECE">ECE</option>
+																<option value="CSE">CSE</option>
+																<option value="IT">IT</option>
+																<option value="MECH">MECH</option>
+																<option value="CIVIL">CIVIL</option>
+																<option value="EEE">EEE</option>
+																<option value="CHEMICAL">CHEMICAL</option>
+															</select>
 														</div>
 														<div class="mb-3 text-primary ">
-															<label for="Degree" class="form-label">Degree</label>
-															<input type="text" name="FacultyDegree" id="Degree" value="<?PHP echo $SelectFacultyRow['city'];?>" class="form-control border-primary  border shadow-none" required/> 
+															<label for="NotificationYearSection" class="form-label">Section</label>
+															<select name="NotificationYearSection" id="NotificationYearSection" class="form-select bg-light mb-2" aria-label="Default select example" >
+																<option selected value="">Section</option>
+																<option value="A">A</option>
+																<option value="B">B</option>
+																<option value="C">C</option>
+															</select>
+														</div>
+														<div class="mb-3 text-primary ">
+															<label for="NotificationFile" class="form-label">File</label>
+															<input type="text" name="NotificationFile" id="NotificationFile" class="form-control border-primary border shadow-none" /> 
+														</div>
+														<div class="mb-3 text-primary ">
+															<label for="NotificationLink" class="form-label">Link</label>
+															<input type="file" name="NotificationLink" id="NotificationLink" class="form-control border-primary border shadow-none" /> 
 														</div>
 														<div class=" mb-3 text-primary text-center mt-2">
-															<input type="submit" class="btn btn-sm btn-primary fw-bold rounded-pill " name="Update" style="font-size:20px;" value="    Update   " /> 
+															<input type="submit" class="btn btn-sm btn-primary fw-bold rounded-pill " name="AddNotification" style="font-size:20px;" value="Add" /> 
 														</div>
 													</form>
 												</div>
