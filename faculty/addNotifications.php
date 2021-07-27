@@ -7,15 +7,53 @@ if (!isset($_SESSION['faculty'])) {
 $FacultyId = $_SESSION['faculty'];
 
 if (isset($_POST['AddNotification'])) {
-	if (condition) {
-		$event_banner= $_FILES['event_banner']['name'];
-		$event_banner_file = $_FILES['event_banner']['tmp_name'];
-		$event_banner_size = $_FILES['event_banner']['size'];
+	if (isset($_POST['NotificationName']) && $_POST['NotificationName'] != "" && isset($_POST['NotificationDescription']) && $_POST['NotificationDescription'] != "" && isset($_POST['NotificationYear']) && $_POST['NotificationYear'] != "" && isset($_POST['NotificationBranch']) && $_POST['NotificationBranch'] != "" && isset($_POST['NotificationSection']) && $_POST['NotificationSection'] != "" ) {
+		$NotificationName = $connect -> real_escape_string($_POST['NotificationName']);
+		$NotificationDescription = $connect -> real_escape_string($_POST['NotificationDescription']);
+		$NotificationYear = $connect -> real_escape_string($_POST['NotificationYear']);
+		$NotificationBranch = $connect -> real_escape_string($_POST['NotificationBranch']);
+		$NotificationSection = $connect -> real_escape_string($_POST['NotificationSection']);
+		date_default_timezone_set("Asia/Kolkata");   //India time (GMT+5:30)
+		$NotificationDateTime = date('d-m-Y H:i:s');
+		if (isset($_POST['NotificationLink']) && $_POST['NotificationLink'] != "") {
+			$NotificationLink = $connect -> real_escape_string($_POST['NotificationLink']);
+		}else {
+			$NotificationLink = "";
+		}
+		if ($_FILES['NotificationFile'] && $_FILES['NotificationFile']['name'] != "" && $_FILES['NotificationFile']['size'] > 0100) {
+			$NotificationFile = $_FILES['NotificationFile']['name'];		
+			$NotificationFileFile = $_FILES['NotificationFile']['tmp_name'];
+			$NotificationFileExtension = pathinfo($NotificationFile, PATHINFO_EXTENSION);
+			$NotificationFileName = $NotificationName.date("Y_m_d").date("h_i_sa").rand(1000,9999);
+			$NotificationFileDestination = './../assets/NotificationFiles/'.$NotificationFileName.".".$NotificationFileExtension;
+			$NotificationFileFinalName = $NotificationFileName.".".$NotificationFileExtension;
+			$extensions = array("jpeg","jpg","png","jfif","JPEG","PNG","PDF","DOC","DOCS","ZIP","pdf","doc","docs","zip");
+			if (in_array($NotificationFileExtension,$extensions) === false) {
+				echo "<script>alert('Invalid file extension!')</script>";
+			}elseif($_FILES['NotificationFile']['size'] > 12097152){
+				echo "<script>alert('File size must be excately 12 MB or below.')</script>";
+			}elseif (move_uploaded_file($NotificationFileFile,$NotificationFileDestination)) {
+				$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
+				if ($AddNotification) {
+					echo "<script>alert('Notification added')</script>";
+				}else {
+					echo "<script>alert('Failed,try again')</script>";
+				}
+			}else {
+				echo "<script>alert('File not Uploaded,try again!')</script>";
+			}
+		}else{
+			$NotificationFileFinalName = "";
+			$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
+			if ($AddNotification) {
+				echo "<script>alert('Notification added')</script>";
+			}else {
+				echo "<script>alert('Failed,try again')</script>";
+			}
+		}
 	} else {
-		# code...
+		//echo "<script>alert('All fields must be filled!')</script>";
 	}
-	
-	
 }
 ?>
 <!DOCTYPE html>
@@ -95,7 +133,8 @@ if (isset($_POST['AddNotification'])) {
 														<div class="mb-3 text-primary">
 															<label for="NotificationYear" class="form-label">year</label>
 															<select name="NotificationYear" id="NotificationYear"  class="form-select bg-light mb-2" aria-label="Default select example">
-																<option selected value="">Year</option>
+																<option selected value="">Year*</option>
+																<option value="0">All</option>
 																<option value="1">1st Year</option>
 																<option value="2">2nd Year</option>
 																<option value="3">3rd Year</option>
@@ -103,9 +142,10 @@ if (isset($_POST['AddNotification'])) {
 															</select>
 														</div>
 														<div class="mb-3 text-primary ">
-															<label for="NotificationYearBranch" class="form-label">Branch</label>
-															<select name="NotificationYearBranch" id="NotificationYearBranch" class="form-select bg-light mb-2" aria-label="Default select example">
-																<option selected value="">Branch</option>
+															<label for="NotificationBranch" class="form-label">Branch</label>
+															<select name="NotificationBranch" id="NotificationBranch" class="form-select bg-light mb-2" aria-label="Default select example">
+																<option selected value="">Branch*</option>
+																<option value="All">All</option>
 																<option value="ECE">ECE</option>
 																<option value="CSE">CSE</option>
 																<option value="IT">IT</option>
@@ -116,9 +156,10 @@ if (isset($_POST['AddNotification'])) {
 															</select>
 														</div>
 														<div class="mb-3 text-primary ">
-															<label for="NotificationYearSection" class="form-label">Section</label>
-															<select name="NotificationYearSection" id="NotificationYearSection" class="form-select bg-light mb-2" aria-label="Default select example" >
-																<option selected value="">Section</option>
+															<label for="NotificationSection" class="form-label">Section</label>
+															<select name="NotificationSection" id="NotificationSection" class="form-select bg-light mb-2" aria-label="Default select example" >
+																<option selected value="">Section*</option>
+																<option value="All">All</option>
 																<option value="A">A</option>
 																<option value="B">B</option>
 																<option value="C">C</option>
@@ -126,11 +167,11 @@ if (isset($_POST['AddNotification'])) {
 														</div>
 														<div class="mb-3 text-primary ">
 															<label for="NotificationFile" class="form-label">File</label>
-															<input type="text" name="NotificationFile" id="NotificationFile" class="form-control border-primary border shadow-none" /> 
+															<input type="file" name="NotificationFile" id="NotificationFile" class="form-control border-primary border shadow-none" /> 
 														</div>
 														<div class="mb-3 text-primary ">
 															<label for="NotificationLink" class="form-label">Link</label>
-															<input type="file" name="NotificationLink" id="NotificationLink" class="form-control border-primary border shadow-none" /> 
+															<input type="link" name="NotificationLink" id="NotificationLink" class="form-control border-primary border shadow-none" /> 
 														</div>
 														<div class=" mb-3 text-primary text-center mt-2">
 															<input type="submit" class="btn btn-sm btn-primary fw-bold rounded-pill " name="AddNotification" style="font-size:20px;" value="Add" /> 

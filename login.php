@@ -29,7 +29,7 @@ if (isset($_POST['loginSubmit'])) {
 			if (mysqli_num_rows($UserCheck) == 1) {
 				$UserCheckRow = mysqli_fetch_array($UserCheck);
 				if (password_verify($loginPassword, $UserCheckRow['password'])) {
-					$_SESSION['students'] = $loginId;
+					$_SESSION['student'] = $loginId;
 					echo "<script>alert('Successfully logged in.')</script>";
                     echo "<script>window.location='./index.php';</script>";
 				} else {
@@ -41,12 +41,10 @@ if (isset($_POST['loginSubmit'])) {
 		}else {
 			echo "<script>alert('Invalid Login!')</script>";
 		}
-		
 	} else {
 		echo "<script>alert('All fields must be filled!')</script>";
 	}
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -87,11 +85,15 @@ if (isset($_POST['loginSubmit'])) {
 		<label for="click" class="menu-btn" id="sidebarCollapse"> <i class="fas fa-bars"></i> </label>
 		<ul class="mx-auto">
 			<li><a href="index.php" class="text-decoration-none Home" > Home</a></li>
-			<li><a href="changePassword.php" class="text-decoration-none ChangePassword" >Change Password</a></li>
-            <li><a href="profile.php" class="text-decoration-none Profile" >Profile</a></li>
-			<li><a href="logout.php" class="text-decoration-none">Logout</a></li>
-			<li><a href="register.php" class="text-decoration-none Register"  for="click">Register</a></li>
-			<li><a href="login.php" class="text-decoration-none Login" >Login</a></li>
+			<?PHP 
+				if (isset($_SESSION['student'])) { ?>
+				<li><a href="changePassword.php" class="text-decoration-none ChangePassword" >Change Password</a></li>
+				<li><a href="profile.php" class="text-decoration-none Profile" >Profile</a></li>
+				<li><a href="logout.php" class="text-decoration-none">Logout</a></li>
+			<?PHP }else{ ?>
+				<li><a href="register.php" class="text-decoration-none Register"  for="click">Register</a></li>
+				<li><a href="login.php" class="text-decoration-none Login" >Login</a></li>
+			<?PHP } ?>
 		</ul>
 	</nav>
 	<!-- End Navbar -->
@@ -166,11 +168,14 @@ if (isset($_POST['loginSubmit'])) {
 							<h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
 							<ul class="list-unstyled">
 								<li><a href="index.php" class="text-decoration-none text-white Home" ><i class="fas fa-angle-right"></i>  Home</a></li>
+								<?PHP if (isset($_SESSION['student'])) { ?>
 								<li><a href="changePassword.php" class="text-decoration-none text-white ChangePassword"><i class="fas fa-angle-right"></i>  Change Password</a></li>
 								<li><a href="profile.php" class="text-decoration-none text-white Profile"><i class="fas fa-angle-right"></i>  Profile</a></li>
 								<li><a href="logout.php" class="text-decoration-none text-white "><i class="fas fa-angle-right"></i> Logout</a></li>
+							<?PHP } else{ ?>
 								<li><a href="register.php" class="text-decoration-none text-white Register" ><i class="fas fa-angle-right"></i>  Register</a></li>
 								<li><a href="login.php" class="text-decoration-none text-white Login" ><i class="fas fa-angle-right"></i>  Login</a></li>
+							<?PHP } ?>		
 							</ul>
 						</div>
 					</div>
