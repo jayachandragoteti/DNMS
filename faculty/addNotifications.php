@@ -27,15 +27,15 @@ if (isset($_POST['AddNotification'])) {
 			$NotificationFileName = $NotificationName.date("Y_m_d").date("h_i_sa").rand(1000,9999);
 			$NotificationFileDestination = './../assets/NotificationFiles/'.$NotificationFileName.".".$NotificationFileExtension;
 			$NotificationFileFinalName = $NotificationFileName.".".$NotificationFileExtension;
-			$extensions = array("jpeg","jpg","png","jfif","JPEG","PNG","PDF","DOC","DOCS","ZIP","pdf","doc","docs","zip");
+			$extensions = array("jpeg","jpg","png","jfif","JPEG","PNG","PDF","DOC","DOCX","ZIP","pdf","doc","docx","zip");
 			if (in_array($NotificationFileExtension,$extensions) === false) {
 				echo "<script>alert('Invalid file extension!')</script>";
 			}elseif($_FILES['NotificationFile']['size'] > 12097152){
 				echo "<script>alert('File size must be excately 12 MB or below.')</script>";
 			}elseif (move_uploaded_file($NotificationFileFile,$NotificationFileDestination)) {
-				$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
+				$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`facultyId`,`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$FacultyId','$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
 				if ($AddNotification) {
-					echo "<script>alert('Notification added')</script>";
+					echo "<script>alert('Notification added Successfully')</script>";
 				}else {
 					echo "<script>alert('Failed,try again')</script>";
 				}
@@ -44,7 +44,7 @@ if (isset($_POST['AddNotification'])) {
 			}
 		}else{
 			$NotificationFileFinalName = "";
-			$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
+			$AddNotification =  mysqli_query($connect,"INSERT INTO `notifications`(`facultyId`,`name`, `subject`, `year`, `branch`, `section`, `link`, `file`, `datm`) VALUES ('$FacultyId','$NotificationName','$NotificationDescription','$NotificationYear','$NotificationBranch','$NotificationSection','$NotificationLink','$NotificationFileFinalName','$NotificationDateTime')");
 			if ($AddNotification) {
 				echo "<script>alert('Notification added')</script>";
 			}else {
@@ -52,7 +52,7 @@ if (isset($_POST['AddNotification'])) {
 			}
 		}
 	} else {
-		//echo "<script>alert('All fields must be filled!')</script>";
+		echo "<script>alert('All fields must be filled!')</script>";
 	}
 }
 ?>
@@ -110,7 +110,7 @@ if (isset($_POST['AddNotification'])) {
 			<div class="container-fluid">
 				<!-- Main -->
 				<main class="ajax-main-content">
-				<div class="container mt-5">
+					<div class="container mt-5">
 						<div class="row justify-content-md-center">
 							<div class="col-md-8 ">
 								<div class="card text-center">

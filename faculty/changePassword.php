@@ -1,4 +1,47 @@
+<?PHP
+include "./../databaseConnection.php";
+session_start();
+if (!isset($_SESSION['faculty'])) {
+	header('location:./../logout.php');
+}
+$FacultyId = $_SESSION['faculty'];
+if (isset($_POST['UpdatePasswordSubmit'])) {
+	if (isset($_POST['oldPassword']) && $_POST['oldPassword'] != "" && isset($_POST['newPassword']) && $_POST['newPassword'] != "" && isset($_POST['confirmPassword']) && $_POST['confirmPassword'] != "") {
+		$oldPassword = $connect -> real_escape_string($_POST['oldPassword']); 
+        $newPassword = $connect -> real_escape_string($_POST['newPassword']);
+        $confirmPassword = $connect -> real_escape_string($_POST['confirmPassword']);
+		if ($confirmPassword != $newPassword) {
+			echo "<script>alert('New password and confirm password should be same!')</script>";
+		}elseif(strlen($newPassword) < 8){
+			echo "<script>alert('Password should contain at least eight characters')</script>";
+		}else {
+			$SelectUser = mysqli_query($connect,"SELECT `password` FROM `faculty` WHERE `id` = '$FacultyId'");
+			if (mysqli_num_rows($SelectUser) == 1) {
+				$userRow = mysqli_fetch_array($SelectUser);
+				if (password_verify($oldPassword, $userRow['password'])) {
+					$hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
+					$userUpdate = mysqli_query($connect,"UPDATE `faculty` SET `password`='$hashed_password' WHERE `id` = '$FacultyId'");
+					if ($userUpdate) {
+						echo "<script>alert('Password Updated successfully.!')</script>";
+					} else {
+						echo "<script>alert('Failed try again!')</script>";
+					}
+					
+				}else{
+					echo "<script>alert('Invalid old password!')</script>";
+				}
+			}else {
+				header('location:logout.php');
+			}
+		}
 
+	} else {
+		echo "<script>alert('All fields must be filled!')</script>";
+	}
+	
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +95,53 @@
 			<!-- Page content-->
 			<div class="container-fluid">
 				<!-- Main -->
-				<main class="ajax-main-content"> </main>
+				<main class="ajax-main-content"> 
+					<section>
+						<div class="container mt-5">
+							<div class="row justify-content-md-center">
+								<div class="col-md-8 ">
+									<div class="card text-center">
+										<div class="card-header">
+											<h2 class="text-primary fw-bold large">Change Password</h2>
+										</div>
+										<div class="card-body justify-content-md-center">
+											<div class="container">
+												<div class="row justify-content-md-center">
+													<div class="col-md-8 mt-lg-5">
+														<form method="post" >
+															<div class="col-md-12">
+																<div class="mb-3">
+																	<label for="oldPassword" class="form-label">Old password</label>
+																	<input type="password" name="oldPassword" class="form-control border-primary shadow-none" id="oldPassword" required/> 
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="mb-3">
+																	<label for="newPassword" class="form-label">New Password</label>
+																	<input type="password" class="form-control border-primary shadow-none" name="newPassword" id="newPassword" required/> 
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="mb-3">
+																	<label for="confirmPassword" class="form-label">Confirm Password</label>
+																	<input type="password" class="form-control border-primary shadow-none" name="confirmPassword" id="confirmPassword" required/> 
+																</div>
+															</div>
+															<p class="fw-bold text-primary d-none alert-bell"><i class="fas fa-bell"></i> <span class="User-Password-Alerts"></span></p>
+															<div class=" mb-3 text-center">
+																<input type="submit" name="UpdatePasswordSubmit" class="btn btn-sm btn-primary text-white rounded-pill" style="font-size:20px;" value="Update" /> 
+															</div>
+														</form>
+													</div>
+												</div>
+											</div> 
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> 
+					</section>
+				</main>
 				<!-- End Main -->
 			</div>
 		</div>

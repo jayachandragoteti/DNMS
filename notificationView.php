@@ -1,31 +1,16 @@
-<?PHP
+<?PHP 
 include "./databaseConnection.php";
 session_start();
 if (isset($_SESSION['faculty'])) {
 	header('location:./faculty/index.php');
-}elseif(!isset($_SESSION['student'])){
-	header('location:./logout.php');
 }
-$StudentId = $_SESSION['student'];
-$SelectUser = mysqli_query($connect,"SELECT * FROM `students` WHERE `id` = '$StudentId'");
-if (mysqli_num_rows($SelectUser) == 1) {
-	$userRow = mysqli_fetch_array($SelectUser);
-	if (isset($_POST['updateProfile'])) {
-		$name = $connect -> real_escape_string($_POST['name']); 
-        $email = $connect -> real_escape_string($_POST['email']);
-        $contact = $connect -> real_escape_string($_POST['contact']);		
-        $year = $connect -> real_escape_string($_POST['year']);
-		$userUpdate = mysqli_query($connect,"UPDATE `students` SET `name`='$name',`email`= '$email',`contactNo` = '$contact',`year` = '$year' WHERE `id` = '$StudentId'");
-		if ($userUpdate) {
-			echo "<script>alert('Updated')</script>";
-		} else {
-			echo "<script>alert('Failed,try again!')</script>";
-		}		
-	}
-}else{
-	header('location:logout.php');
+if (isset($_GET['NotificationId']) && $_GET['NotificationId'] !="") {
+	$NotificationId = $_GET['NotificationId'];
+	$SelectNotificationSql = mysqli_query($connect,"SELECT * FROM `notifications` WHERE `sno` = '$NotificationId'");
+	$SelectNotificationRow = mysqli_fetch_array($SelectNotificationSql);
+}else {
+	header('location:./index.php');
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +23,7 @@ if (mysqli_num_rows($SelectUser) == 1) {
 	<!--Favicon-->
 	<link rel="icon" href="./assets/images/logo.gif" type="image/gif" sizes="16x16">
 	<!-- Page title -->
-	<title>Profile | Department Notifications</title>
+	<title>Notification View | Department Notifications</title>
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 	<!-- Bootstrap CSS -->
@@ -82,57 +67,39 @@ if (mysqli_num_rows($SelectUser) == 1) {
 	<!-- Main -->
 		<main class="ajax-main-content">
 			<section>
-                <div class="container">
+                <div class="container mt-5">
                     <div class="row justify-content-md-center">
-                        <div class="col-md-6">
-                            <div class="container">
-                                <div class="card mt-5">
-                                    <div class="card-body">
-                                        <div class="container ">
-                                            <div class="col-lg-12">
-                                                <h3 class="text-center mb-5 text-primary">Receiver Profile</h3>
-                                            </div>
-                                            <div class="row">
-                                                <form  method="POST" action="<?PHP echo $_SERVER['PHP_SELF']?>"id="updateReceiverProfileForm">
-													<div class="mb-3 ">
-                                                        <label class="form-label text-primary">Student Id</label>
-                                                        <input  value="<?PHP echo $userRow['id'];?>"  class=" form-control bg-light text-primary border border-primary shadow-none"  disabled/> 
-                                                    </div>
-                                                    <div class="mb-3 ">
-                                                        <label class="form-label text-primary">Name</label>
-                                                        <input type="text" name="name"  value="<?PHP echo $userRow['name'];?>"  id="name"  class=" form-control bg-light text-primary border border-primary shadow-none"  required/> 
-                                                    </div>
-                                                    <div class="mb-3 ">
-                                                        <label class="form-label text-primary">Email</label>
-                                                        <input type="email" name="email" value="<?PHP echo $userRow['email'];?>"  id="email"  class=" form-control bg-light text-primary border border-primary shadow-none"  required/> 
-                                                    </div>
-                                                    <div class="mb-3 ">
-                                                        <label class="form-label text-primary">Contact No</label>
-                                                        <input type="phone" name="contact" value="<?PHP echo $userRow['contactNo'];?>" id="contact"  class=" form-control bg-light text-primary border border-primary shadow-none" required/> 
-                                                    </div>
-                                                    <div class="mb-3 ">
-                                                        <label class="form-label text-primary">Year - <?PHP echo $userRow['year'];?></label>
-														<select name="year" id=""  class="form-select bg-light mb-2" aria-label="Default select example">
-															<option selected value="<?PHP echo $userRow['year'];?>">Year</option>
-															<option value="1">1st Year</option>
-															<option value="2">2nd Year</option>
-															<option value="3">3rd Year</option>
-															<option value="4">4th Year</option>
-														</select> 
-                                                    </div>
-													<div class=" mb-3 w-50 mx-auto">
-														<input type="submit" name="updateProfile" class="btn btn-sm btn-primary text-white  rounded-pill" value="Update" />
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-sm-10">
+                            <div class="card text-center">
+								<div class="card-header bg-primary text-white">
+									<h3 class="card-title"><?PHP echo $SelectNotificationRow['name'];?></h3>
+								</div>
+								<div class="card-body">
+									<p class="card-text text-justify"><?PHP echo $SelectNotificationRow['subject'];?></p>
+									<footer class="blockquote-footer">To 
+										<cite title="Source Title">
+											<?PHP 
+											if ($SelectNotificationRow['year'] == 0) { echo "For All Years students -";}else{ echo $SelectNotificationRow['year'];}
+											if ($SelectNotificationRow['branch'] == "All") { echo "For All Branch students -";}else{ echo $SelectNotificationRow['branch']."-";}  
+											if ($SelectNotificationRow['section'] == "All") { echo "For All section students";}else{ echo $SelectNotificationRow['section'];}
+											?>
+										</cite>
+									</footer>
+									<?PHP if($SelectNotificationRow['link'] !=""){ ?>
+									<a href="<?PHP echo $SelectNotificationRow['link'];?>" class="btn btn-primary"><i class="fas fa-link"></i></a>
+									<?PHP } ?>
+								</div>
+								<div class="embed-responsive ">
+									<iframe class="embed-responsive-item" src="./assets/NotificationFiles/<?PHP echo $SelectNotificationRow['file'];?>" width="100%" height="350"></iframe>
+								</div>
+								<div class="card-footer text-muted">
+									Psted Date & Time : <?PHP echo $SelectNotificationRow['datm'];?>
+								</div>
+							</div>
                         </div>
                     </div>
                 </div>
-            </section>			
+            </section>		
 		</main>
 	<!-- End Main -->
 

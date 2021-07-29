@@ -70,7 +70,7 @@ if (isset($_SESSION['faculty'])) {
 									<i class="far fa-bell blink "></i>
 								</h1>
 								<p class="lead text-center text-white font-weight-bold mt-5">Withholding information is the essence of tyranny. Control of the flow of information is the tool of the dictatorship.</p>
-								<p class="lead text-white font-weight-bold text-center mt-5 "> <a class="btn btn-outline-light btn-light text-primary rounded-pill p-2" href="#SearchNotifications" role="button">Search</a> </p>
+								<p class="lead text-white font-weight-bold text-center mt-5 "> <a class="btn border-primary btn-light text-primary rounded-pill p-2" href="#SearchNotifications" role="button">Search</a> </p>
 							</div>
 						</div>
 					</div>
@@ -84,20 +84,24 @@ if (isset($_SESSION['faculty'])) {
 					<div class="row justify-content-md-center">
 						<div class="col col-lg-12">
 							<div class="container">
-								<form method="get" >
-									<div class="row">
-										<div class="col-sm-3">
+								<form method="POST" action="<?PHP echo $_SERVER['PHP_SELF'];?>">
+									<div class="row justify-content-md-center">
+										<div class="col-sm-2">
 											<select name="year" id="availableNotificationsYearFilter"  class="form-select bg-light mb-2" aria-label="Default select example">
 												<option selected value="">Year</option>
+												<option value="">All</option>
+												<option value="0">Open</option>
 												<option value="1">1st Year</option>
 												<option value="2">2nd Year</option>
 												<option value="3">3rd Year</option>
 												<option value="4">4th Year</option>
 											</select>
 										</div>
-										<div class="col-sm-3">
+										<div class="col-sm-2">
 											<select name="branch" id="availableNotificationsBranchFilter" class="form-select bg-light mb-2" aria-label="Default select example">
 												<option selected value="">Branch</option>
+												<option value="">All</option>
+												<option value="All">Open</option>
                                                 <option value="ECE">ECE</option>
                                                 <option value="CSE">CSE</option>
                                                 <option value="IT">IT</option>
@@ -107,16 +111,18 @@ if (isset($_SESSION['faculty'])) {
                                                 <option value="CHEMICAL">CHEMICAL</option>
 											</select>
 										</div>
-										<div class="col-sm-3">
+										<div class="col-sm-2">
 											<select name="section" id="availableNotificationsSectionFilter" class="form-select bg-light mb-2" aria-label="Default select example" >
 												<option selected value="">Section</option>
+												<option value="">All</option>
+												<option value="All">Open</option>
 												<option value="A">A</option>
 												<option value="B">B</option>
 												<option value="C">C</option>
 											</select>
 										</div>
-										<div class="col-sm-3">
-											<select id="ShowRows" class="form-select bg-light mb-2" aria-label="Default select example">
+										<div class="col-sm-2">
+											<select name="ShowRows" class="form-select bg-light mb-2" aria-label="Default select example">
 												<option selected value="">Show Rows</option>
 												<option value="10">10</option>
 												<option value="20">20</option>
@@ -131,6 +137,9 @@ if (isset($_SESSION['faculty'])) {
 												<option value="More">More</option>
 											</select>
 										</div>
+										<div class="col-sm-2 d-flex justify-content-center">
+											<input type="submit" class="btn bg-primary text-white mb-2" name="NotificationFilter" value="Search" />
+										</div>
 									</div>
 								</form>
 							</div>
@@ -142,16 +151,61 @@ if (isset($_SESSION['faculty'])) {
 							<div class="table-responsive">
 								<table  id="dtBasicExample" cellspacing="0" width="100%"class="table table-striped table-hover table-bordered border-primary ">
 									<thead>
-										<tr class="p-2">
-											<th scope="col">Sno</th>
+										<tr class="p-2 bg-primary text-white">
 											<th scope="col">Notification</th>
-											<th scope="col"></th>
+											<th scope="col">year</th>											
+											<th scope="col">Branch</th>											
+											<th scope="col">Section</th>
 											<th scope="col">View</th>
 										</tr>
 									</thead>
-									<p class="fw-bold text-primary d-none alert-bell"><i class="fas fa-bell"></i> <span class="Sample-Request-Alerts"></span></p>
-									<tbody class="AvailableNotificationsResponse">
-			
+									<tbody>
+										<?PHP 
+											$SelectNotification = "SELECT * FROM `notifications` WHERE `facultyId`!='' ";
+
+											if (isset($_POST['NotificationFilter'])) {
+												if (isset($_POST['year']) && $_POST['year'] !="") {
+													$year  = $_POST['year'];
+													$SelectNotification .= "AND `year` = '$year'";
+												}
+												if (isset($_POST['branch']) && $_POST['branch'] !="") {
+													$branch  = $_POST['branch'];
+													$SelectNotification .= "AND `branch` = '$branch'";
+												}
+												if (isset($_POST['section']) && $_POST['section'] !="") {
+													$section  = $_POST['section'];
+													$SelectNotification .= "AND `section` = '$section'";
+												}
+												$limit = 10;
+												if (isset($_POST['ShowRows']) && $_POST['ShowRows'] !="") {
+													if ($_POST['ShowRows'] == "More") {
+														$limit = 10000000000000000000000000000000;
+													}else{
+														$limit = $_POST['ShowRows'];
+													}
+												}
+												$SelectNotification .="ORDER BY `sno` DESC LIMIT $limit ";
+											}
+											
+											$SelectNotificationSql = mysqli_query($connect,$SelectNotification);
+											if (mysqli_num_rows($SelectNotificationSql) > 0) {
+												while ($SelectNotificationRow = mysqli_fetch_array($SelectNotificationSql)) { ?>
+												<tr class="p-2">
+													<td scope="col"><?PHP echo $SelectNotificationRow['name'];?></td>
+													<td scope="col"><?PHP if ($SelectNotificationRow['year'] == 0){echo "All";}else{ echo $SelectNotificationRow['year']; }?></td>											
+													<td scope="col"><?PHP echo $SelectNotificationRow['branch'];?></td>											
+													<td scope="col"><?PHP echo $SelectNotificationRow['section'];?></td>
+													<td scope="col" class="d-flex justify-content-center">
+														<a href="notificationView.php?NotificationId=<?PHP echo $SelectNotificationRow['sno'];?>" class="btn bg-primary text-white"><i class="far fa-eye"></i></a>
+													</td>
+												</tr>
+										<?PHP } }else { ?>
+											<tr class="p-2">
+												<td scope="col" colspan="5" class="text-center">
+													<p class="btn bg-primary text-white"> No Data Found!</p>
+												</td>
+											</tr>
+										<?PHP } ?>
 									</tbody>
 								</table>
 								<!-- end table -->

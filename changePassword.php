@@ -7,6 +7,43 @@ if (isset($_SESSION['faculty'])) {
 }elseif(!isset($_SESSION['student'])){
 	header('location:./logout.php');
 }
+$StudentId = $_SESSION['student'];
+if (isset($_POST['UpdatePasswordSubmit'])) {
+	if (isset($_POST['oldPassword']) && $_POST['oldPassword'] != "" && isset($_POST['newPassword']) && $_POST['newPassword'] != "" && isset($_POST['confirmPassword']) && $_POST['confirmPassword'] != "") {
+		$oldPassword = $connect -> real_escape_string($_POST['oldPassword']); 
+        $newPassword = $connect -> real_escape_string($_POST['newPassword']);
+        $confirmPassword = $connect -> real_escape_string($_POST['confirmPassword']);
+		if ($confirmPassword != $newPassword) {
+			echo "<script>alert('New password and confirm password should be same!')</script>";
+		}elseif(strlen($newPassword) < 8){
+			echo "<script>alert('Password should contain at least eight characters')</script>";
+		}else {
+			$SelectUser = mysqli_query($connect,"SELECT `password` FROM `students` WHERE `id` = '$StudentId'");
+			if (mysqli_num_rows($SelectUser) == 1) {
+				$userRow = mysqli_fetch_array($SelectUser);
+				if (password_verify($oldPassword, $userRow['password'])) {
+					$hashed_password = password_hash($newPassword, PASSWORD_DEFAULT);
+					$userUpdate = mysqli_query($connect,"UPDATE `students` SET `password`='$hashed_password' WHERE `id` = '$StudentId'");
+					if ($userUpdate) {
+						echo "<script>alert('Password Updated successfully.!')</script>";
+					} else {
+						echo "<script>alert('Failed try again!')</script>";
+					}
+					
+				}else{
+					echo "<script>alert('Invalid old password!')</script>";
+				}
+			}else {
+				header('location:logout.php');
+			}
+		}
+
+	} else {
+		echo "<script>alert('All fields must be filled!')</script>";
+	}
+	
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,7 +111,7 @@ if (isset($_SESSION['faculty'])) {
                                                 <h3 class="text-center mb-5 text-primary">Change Password</h3>
                                             </div>
                                             <div class="row">
-                                                <form method="post">
+                                                <form method="post" action="<?PHP echo $_SERVER['PHP_SELF'];?>">
                                                     <div class="col-md-12">
                                                         <div class="mb-3">
                                                             <label for="oldPassword" class="form-label">Old password</label>
@@ -95,7 +132,7 @@ if (isset($_SESSION['faculty'])) {
                                                     </div>
                                                     <p class="fw-bold text-primary d-none alert-bell"><i class="fas fa-bell"></i> <span class="User-Password-Alerts"></span></p>
                                                     <div class=" mb-3 text-center">
-                                                        <input type="button" onclick="UpdatePassword()" name="UpdatePasswordSubmit" class="btn btn-sm btn-primary text-white rounded-pill" style="font-size:20px;" value="Update" /> 
+                                                        <input type="submit" name="UpdatePasswordSubmit" class="btn btn-sm btn-primary text-white rounded-pill" style="font-size:20px;" value="Update" /> 
                                                     </div>
                                                 </form>
                                             </div>

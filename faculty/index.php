@@ -4,6 +4,25 @@ session_start();
 if (!isset($_SESSION['faculty'])) {
 	header('location:./../logout.php');
 }
+$facultyId = $_SESSION['faculty'];
+$SelectFaculty = mysqli_query($connect,"SELECT * FROM `faculty` WHERE `id` = '$facultyId '");
+$SelectFacultyRow = mysqli_fetch_array($SelectFaculty);
+if (isset($_POST['Update'])) {
+	if ($_POST['FacultyName'] != "" && $_POST['FacultyContactNo'] != "" && $_POST['FacultyEmail'] != "" && $_POST['FacultyDegree'] != "") {
+		$FacultyName = $connect -> real_escape_string($_POST['FacultyName']);
+		$FacultyContactNo = $connect -> real_escape_string($_POST['FacultyContactNo']);
+		$FacultyEmail = $connect -> real_escape_string($_POST['FacultyEmail']);
+		$FacultyDegree = $connect -> real_escape_string($_POST['FacultyDegree']);
+		$updateUser = mysqli_query($connect,"UPDATE `faculty` SET `name`='$FacultyName',`degree`='$FacultyDegree',`email`='$FacultyEmail',`contact`='$FacultyContactNo' WHERE `id` = '$facultyId'");
+		if ($updateUser) {
+			echo "<script>alert('Updated Successfully.')</script>";
+		}else {
+			echo "<script>alert('Update failed,try again')</script>";
+		}
+	}else {
+		echo "<script>alert('All fields must be filled!')</script>";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +76,7 @@ if (!isset($_SESSION['faculty'])) {
 			<div class="container-fluid">
 				<!-- Main -->
 				<main class="ajax-main-content"> 
-<div class="container mt-5">
+					<div class="container mt-5">
 						<div class="row justify-content-md-center">
 							<div class="col-md-8 ">
 								<div class="card text-center">
@@ -71,15 +90,15 @@ if (!isset($_SESSION['faculty'])) {
 													<form method="post">
 														<div class="mb-3 text-primary ">
 															<label for="FacultyId" class="form-label">Faculty Id</label>
-															<input type="text" id="FacultyId" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none"  disabled/> 
+															<input type="text" id="FacultyId" value="<?PHP echo $SelectFacultyRow['id'];?>" class="form-control border-primary border shadow-none"  disabled/> 
 														</div>
 														<div class="mb-3 text-primary">
 															<label for="FacultyName" class="form-label">Name</label>
-															<input type="text" name="FacultyName" id="FacultyName" value="<?PHP echo $SelectFacultyRow['FacultyName'];?>" class="form-control border-primary border shadow-none" required/> 
+															<input type="text" name="FacultyName" id="FacultyName" value="<?PHP echo $SelectFacultyRow['name'];?>" class="form-control border-primary border shadow-none" required/> 
 														</div>
 														<div class="mb-3 text-primary ">
 															<label for="FacultyContactNo" class="form-label">Contact No</label>
-															<input type="phone" name="FacultyContactNo" id="FacultyContactNo" value="<?PHP echo $SelectFacultyRow['contactNo'];?>" class="form-control border-primary border shadow-none" required/> 
+															<input type="phone" name="FacultyContactNo" id="FacultyContactNo" value="<?PHP echo $SelectFacultyRow['contact'];?>" class="form-control border-primary border shadow-none" required/> 
 														</div>
 														<div class="mb-3 text-primary">
 															<label for="email" class="form-label">Email</label>
@@ -87,7 +106,7 @@ if (!isset($_SESSION['faculty'])) {
 														</div>
 														<div class="mb-3 text-primary ">
 															<label for="Degree" class="form-label">Degree</label>
-															<input type="text" name="FacultyDegree" id="Degree" value="<?PHP echo $SelectFacultyRow['city'];?>" class="form-control border-primary  border shadow-none" required/> 
+															<input type="text" name="FacultyDegree" id="Degree" value="<?PHP echo $SelectFacultyRow['degree'];?>" class="form-control border-primary  border shadow-none" required/> 
 														</div>
 														<div class=" mb-3 text-primary text-center mt-2">
 															<input type="submit" class="btn btn-sm btn-primary fw-bold rounded-pill " name="Update" style="font-size:20px;" value="    Update   " /> 
