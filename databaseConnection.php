@@ -2,7 +2,6 @@
 
 // Server name must be localhost
 $serverName = "localhost";
-
 // In my case, user name will be root
 $userName = "root";
 //$userName = "id17280129_jayachandra";
