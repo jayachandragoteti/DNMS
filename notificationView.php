@@ -85,13 +85,15 @@ if (isset($_GET['NotificationId']) && $_GET['NotificationId'] !="") {
 											?>
 										</cite>
 									</footer>
-									<?PHP if($SelectNotificationRow['link'] !=""){ ?>
+									<?PHP if($SelectNotificationRow['link'] != "" || !empty($SelectNotificationRow['link'])){ ?>
 									<a href="<?PHP echo $SelectNotificationRow['link'];?>" class="btn btn-primary"><i class="fas fa-link"></i></a>
 									<?PHP } ?>
 								</div>
+								<?PHP if($SelectNotificationRow['file'] != "" || !empty($SelectNotificationRow['file'])){ ?>
 								<div class="embed-responsive ">
 									<iframe class="embed-responsive-item" src="./assets/NotificationFiles/<?PHP echo $SelectNotificationRow['file'];?>" width="100%" height="350"></iframe>
 								</div>
+								<?PHP } ?>
 								<div class="card-footer text-muted">
 									Psted Date & Time : <?PHP echo $SelectNotificationRow['datm'];?>
 								</div>

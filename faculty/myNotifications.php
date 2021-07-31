@@ -205,7 +205,7 @@ if (isset($_POST['deleteSubmit'])) {
 																					<td scope="col"><?PHP echo $SelectNotificationRow['branch'];?></td>											
 																					<td scope="col"><?PHP echo $SelectNotificationRow['section'];?></td>
 																					<td scope="col" class="d-flex justify-content-center">
-																						<a href="notificationView.php?NotificationId=<?PHP echo $SelectNotificationRow['sno'];?>" class="btn bg-primary text-white"><i class="far fa-eye"></i></a>
+																						<a href="myNotificationsView.php?NotificationId=<?PHP echo $SelectNotificationRow['sno'];?>" class="btn bg-primary text-white"><i class="far fa-eye"></i></a>
 																					</td>
 																					<td scope="col">
 																					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete<?PHP echo $SelectNotificationRow['sno'];?>"><i class="fas fa-trash-alt"></i></button>
