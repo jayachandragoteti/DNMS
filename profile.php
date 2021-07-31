@@ -90,7 +90,7 @@ if (mysqli_num_rows($SelectUser) == 1) {
                                     <div class="card-body">
                                         <div class="container ">
                                             <div class="col-lg-12">
-                                                <h3 class="text-center mb-5 text-primary">Receiver Profile</h3>
+                                                <h3 class="text-center mb-5 text-primary">Student Profile</h3>
                                             </div>
                                             <div class="row">
                                                 <form  method="POST" action="<?PHP echo $_SERVER['PHP_SELF']?>"id="updateReceiverProfileForm">
