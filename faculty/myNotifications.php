@@ -234,7 +234,7 @@ if (isset($_POST['deleteSubmit'])) {
 																				</div>
 																		<?PHP } }else { ?>
 																			<tr class="p-2">
-																				<td scope="col" colspan="5" class="text-center">
+																				<td scope="col" colspan="6" class="text-center">
 																					<p class="btn bg-primary text-white"> No Data Found!</p>
 																				</td>
 																			</tr>
