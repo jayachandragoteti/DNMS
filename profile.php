@@ -170,7 +170,7 @@ if (mysqli_num_rows($SelectUser) == 1) {
 			<div class="footer-copyright text-center py-3">©
 				<script>
 				document.write(new Date().getFullYear())
-				</script> Copyright: <a href="https://jayachandragoteti.github.io/" class="text-white">Jayachandra Goteti</a> </div>
+				</script> Copyright: <a href="./index.php" class="text-white"></a>DNMS (MVGR)</div>
 			<!-- Copyright -->
 		</footer>
 	</div>

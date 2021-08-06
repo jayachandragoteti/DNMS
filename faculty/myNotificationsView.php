@@ -91,7 +91,7 @@ if (isset($_GET['NotificationId']) && $_GET['NotificationId'] !="") {
 								</div>
 								<?PHP if($SelectNotificationRow['file'] != "" || !empty($SelectNotificationRow['file'])){ ?>
 								<div class="embed-responsive ">
-									<iframe class="embed-responsive-item" src="./assets/NotificationFiles/<?PHP echo $SelectNotificationRow['file'];?>" width="100%" height="350"></iframe>
+									<iframe class="embed-responsive-item" src="./../assets/NotificationFiles/<?PHP echo $SelectNotificationRow['file'];?>" width="100%" height="350"></iframe>
 								</div>
 								<?PHP } ?>
 								<div class="card-footer text-muted">

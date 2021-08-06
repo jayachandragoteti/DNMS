@@ -161,7 +161,7 @@ if (isset($_SESSION['faculty'])) {
 									</thead>
 									<tbody>
 										<?PHP 
-											$SelectNotification = "SELECT * FROM `notifications` WHERE `facultyId`!='' ";
+											$SelectNotification = "SELECT * FROM `notifications` WHERE `facultyId`!=''";
 
 											if (isset($_POST['NotificationFilter'])) {
 												if (isset($_POST['year']) && $_POST['year'] !="") {
@@ -184,11 +184,12 @@ if (isset($_SESSION['faculty'])) {
 														$limit = $_POST['ShowRows'];
 													}
 												}
-												$SelectNotification .="ORDER BY `sno` DESC LIMIT $limit ";
+												$SelectNotification .="ORDER BY `notifications`.`sno` DESC LIMIT $limit ";
 											}
 											
 											$SelectNotificationSql = mysqli_query($connect,$SelectNotification);
-											if (mysqli_num_rows($SelectNotificationSql) > 0) {
+											$num = mysqli_num_rows($SelectNotificationSql)or die(mysqli_error($connect));
+											if ($num > 0) {
 												while ($SelectNotificationRow = mysqli_fetch_array($SelectNotificationSql)) { ?>
 												<tr class="p-2">
 													<td scope="col"><?PHP echo $SelectNotificationRow['name'];?></td>
@@ -216,14 +217,9 @@ if (isset($_SESSION['faculty'])) {
 				<div class="container mt-5 border-1">
 					<div class="row">
 						<div class="col-lg-6 mt-5">
-							<div class="lead text-center mt-5">
-								<p>Do you feel you dont have much to offer ?
-									<br> you have the most presious resource of all ,
-									<br>the ability to save a life by donating Notifications !
-									<br> help share this valuable gift with someone in need. </p>
-							</div>
 							<div class="text-center text-primary">
-								<h2 class="h1">In Need Of Notifications?</h2> </div>
+								<h2 class="h1">Maharaj Vijayaram Gajapathi Raj College of Engineering (Autonomous)</h2> 
+							</div>
 						</div>
 						<div class="col-lg-6"> <img src="./assets/images/Graduation.svg" class="img-fluid" width="100%"> </div>
 					</div>
@@ -269,7 +265,7 @@ if (isset($_SESSION['faculty'])) {
 			<div class="footer-copyright text-center py-3">©
 				<script>
 				document.write(new Date().getFullYear())
-				</script> Copyright: <a href="https://jayachandragoteti.github.io/" class="text-white">Jayachandra Goteti</a> </div>
+				</script> Copyright: <a href="./index.php" class="text-white"></a>DNMS (MVGR)</div>W
 			<!-- Copyright -->
 		</footer>
 	</div>
